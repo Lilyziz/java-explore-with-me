@@ -31,20 +31,20 @@ services:
     ports:
       - "6542:5432"
     environment:
-      - POSTGRES_DB=ewm-db
+      - POSTGRES_DB=main-db
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=pass
 
-  ewm-service:
-    build: ewm-service
-    container_name: ewm-service
+  main:
+    build: main
+    container_name: main
     ports:
       - "8081:8080"
     depends_on:
       - stats-server
-      - ewm-db
+      - main-db
     environment:
-      - spring.datasource.url=jdbc:postgresql://ewm-db:5432/ewm-db
+      - spring.datasource.url=jdbc:postgresql://main-db:5432/main-db
       - spring.datasource.username=postgres
       - spring.datasource.password=pass
 
