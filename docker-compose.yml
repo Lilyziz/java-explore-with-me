@@ -24,7 +24,7 @@ services:
       - POSTGRES_PASSWORD=pass
       - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/stats-db
 
-  ewm-db:
+  main-db:
     image: postgres:15.2-alpine
     volumes:
       - /var/lib/postgresql/data/
