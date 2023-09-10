@@ -13,7 +13,7 @@ services:
       - POSTGRES_PASSWORD=pass
 
   stats-server:
-    build: ./stats-service/stats-server
+    build: stats-service/stats-server
     container_name: stats-server
     ports:
       - "9090:9090"
@@ -44,8 +44,9 @@ services:
       - stats-server
       - ewm-db
     environment:
-      - spring.datasource.url=jdbc:postgresql://main-db:5432/ewm-db
+      - spring.datasource.url=jdbc:postgresql://ewm-db:5432/ewm-db
       - spring.datasource.username=postgres
       - spring.datasource.password=pass
+
 
 
