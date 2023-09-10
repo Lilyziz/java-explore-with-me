@@ -13,7 +13,7 @@ services:
       - POSTGRES_PASSWORD=pass
 
   stats-server:
-    build: stats/stats-server
+    build: ./stats-service/stats-server
     container_name: stats-server
     ports:
       - "9090:9090"
