@@ -1,3 +1,3 @@
 FROM amazoncorretto:11-alpine-jdk
-COPY target/*.jar app.jar
-CMD ["java", "-jar", "app.jar"]
+COPY target/*.jar main-service.jar
+ENTRYPOINT ["java","-jar","/ewm-service.jar"]
