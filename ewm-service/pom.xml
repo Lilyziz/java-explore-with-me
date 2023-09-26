@@ -23,9 +23,9 @@
         </dependency>
 
         <dependency>
-            <groupId>ru.practicum.client</groupId>
-            <artifactId>client</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <groupId>ru.practicum</groupId>
+            <artifactId>stats-client</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
