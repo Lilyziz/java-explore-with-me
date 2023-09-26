@@ -1,8 +1,8 @@
 package ru.practicum.main.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import lombok.Builder;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 

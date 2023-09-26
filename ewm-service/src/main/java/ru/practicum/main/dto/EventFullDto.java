@@ -1,8 +1,10 @@
 package ru.practicum.main.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.practicum.main.model.Location;
 import ru.practicum.main.model.State;
 

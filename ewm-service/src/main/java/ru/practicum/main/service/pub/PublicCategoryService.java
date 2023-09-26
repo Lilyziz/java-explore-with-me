@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class PublicCategoryService {
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
     public PublicCategoryService(
             CategoryRepository categoryRepository) {

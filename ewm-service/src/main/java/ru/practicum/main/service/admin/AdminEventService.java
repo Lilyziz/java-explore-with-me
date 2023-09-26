@@ -83,7 +83,7 @@ public class AdminEventService {
                 .map(State::valueOf)
                 .collect(Collectors.toList());
 
-        Pageable pageable = (Pageable) PageRequest.of(from / size, size);
+        Pageable pageable = PageRequest.of(from / size, size);
         LocalDateTime start = rangeStart == null ? null : LocalDateTime.parse(rangeStart, dateTimeFormatter);
         LocalDateTime end = rangeEnd == null ? null : LocalDateTime.parse(rangeEnd, dateTimeFormatter);
         List<EventFullDto> events = eventRepository.searchAdminEvents2(userIds, stateList, categoryIds,

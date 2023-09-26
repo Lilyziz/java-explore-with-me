@@ -13,7 +13,7 @@ public class EventMapper {
     static CategoryRepository categoryRepository;
 
     public EventMapper(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
+        EventMapper.categoryRepository = categoryRepository;
     }
 
     public static Event toEvent(NewEventDto newEventDto) {

@@ -10,7 +10,6 @@ import ru.practicum.main.dto.*;
 import ru.practicum.main.exception.BadRequestException;
 import ru.practicum.main.exception.ConflictException;
 import ru.practicum.main.exception.NotFoundException;
-import ru.practicum.main.messages.LogMessages;
 import ru.practicum.main.model.*;
 import ru.practicum.main.repository.*;
 
