@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class HitServiceImpl implements IHitService {
     private final HitRepository hitRepository;
-    static Integer cnt = 0;
+    private Integer cnt = 0;
 
     @Override
     public HitDto save(Stats stats) {
