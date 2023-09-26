@@ -11,10 +11,7 @@
     </parent>
 
     <artifactId>stats-client</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
-
-    <name>client</name>
+    <name>stats-client</name>
     <url>http://maven.apache.org</url>
 
     <dependencies>
@@ -22,11 +19,11 @@
             <groupId>ru.practicum</groupId>
             <artifactId>stats-dto</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.15.0</version>
         </dependency>
     </dependencies>
     <build>
