@@ -13,10 +13,6 @@
 
     <artifactId>ewm-service</artifactId>
     <name>ewm-service</name>
-    <version>0.0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
-
-
     <dependencies>
 
         <dependency>
