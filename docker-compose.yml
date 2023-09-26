@@ -9,8 +9,6 @@ services:
     depends_on:
       - stats-db
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=pass
       - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/stats-db
 
   stats-db:
@@ -21,8 +19,8 @@ services:
       - "6540:5432"
     environment:
       - POSTGRES_DB=stats-db
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=pass
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
 
   ewm-service:
     build: ewm-service
@@ -44,7 +42,7 @@ services:
       - "6541:5432"
     environment:
       - POSTGRES_DB=ewm-db
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=pass
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
 
 
