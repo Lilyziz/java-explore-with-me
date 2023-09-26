@@ -13,6 +13,8 @@
     <artifactId>stats-client</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
+
+
     <dependencies>
         <dependency>
             <groupId>ru.practicum</groupId>
@@ -20,12 +22,6 @@
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-        </dependency>
-
 
     </dependencies>
     <build>
