@@ -3,7 +3,7 @@ package ru.practicum.main.stats;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
-import ru.practicum.client.BaseClient;
+import ru.practicum.client.Client;
 import ru.practicum.client.HttpClient;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,7 +45,7 @@ public class StatsServer {
 
         String host = configClient.getStatServerUrl();
 
-        HttpResponse<String> httpResponse1 = BaseClient.http(start, end, host, uris + "&unique=true");
+        HttpResponse<String> httpResponse1 = Client.http(start, end, host, uris + "&unique=true");
         String jsonString = httpResponse1.body();
         ObjectMapper mapper = new ObjectMapper();
         List<Map<String, Object>> map = mapper.readValue(jsonString, new TypeReference<List<Map<String, Object>>>() {
@@ -56,5 +56,4 @@ public class StatsServer {
 
         return Integer.parseInt(jsonString2.substring(index + 5, jsonString2.length() - 1));
     }
-
 }
