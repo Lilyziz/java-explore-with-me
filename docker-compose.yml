@@ -6,7 +6,7 @@ services:
     volumes:
       - /var/lib/postgresql/data/
     ports:
-      - "6541:5432"
+      - "6540:5432"
     environment:
       - POSTGRES_DB=stats-db
       - POSTGRES_USER=postgres
@@ -29,7 +29,7 @@ services:
     volumes:
       - /var/lib/postgresql/data/
     ports:
-      - "6542:5432"
+      - "6541:5432"
     environment:
       - POSTGRES_DB=ewm-db
       - POSTGRES_USER=postgres
@@ -39,13 +39,12 @@ services:
     build: ewm-service
     container_name: ewm-service
     ports:
-      - "8081:8080"
+      - "8080:8080"
     depends_on:
       - stats-server
       - ewm-db
     environment:
-      - spring.datasource.url=jdbc:postgresql://ewm-db:5432/ewm-db
-      - spring.datasource.username=postgres
-      - spring.datasource.password=pass
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ewm-db:5432/ewm-db
+      - STATS_SERVER_URL=http://stats-server:9090
 
 
