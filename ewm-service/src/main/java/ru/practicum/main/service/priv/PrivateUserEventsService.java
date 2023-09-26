@@ -113,14 +113,14 @@ public class PrivateUserEventsService {
         Optional.ofNullable(newEventDto.getParticipantLimit()).ifPresent(event::setParticipantLimit);
         Optional.ofNullable(newEventDto.getRequestModeration()).ifPresent(event::setRequestModeration);
         if (newEventDto.getStateAction() != null)
-            newEventDto.setStateAction(newEventDto.getStateAction().
-                    equals("PUBLISH_EVENT") ? "PUBLISHED" : newEventDto.getStateAction());
+            newEventDto.setStateAction(newEventDto.getStateAction()
+                    .equals("PUBLISH_EVENT") ? "PUBLISHED" : newEventDto.getStateAction());
         if (newEventDto.getStateAction() != null)
-            newEventDto.setStateAction(newEventDto.getStateAction().
-                    equals("SEND_TO_REVIEW") ? "PENDING" : newEventDto.getStateAction());
+            newEventDto.setStateAction(newEventDto.getStateAction()
+                    .equals("SEND_TO_REVIEW") ? "PENDING" : newEventDto.getStateAction());
         if (newEventDto.getStateAction() != null)
-            newEventDto.setStateAction(newEventDto.getStateAction().
-                    equals("CANCEL_REVIEW") ? "CANCELED" : newEventDto.getStateAction());
+            newEventDto.setStateAction(newEventDto.getStateAction()
+                    .equals("CANCEL_REVIEW") ? "CANCELED" : newEventDto.getStateAction());
         if (newEventDto.getStateAction() != null)
             Optional.of(State.valueOf(newEventDto.getStateAction())).ifPresent(event::setState);
         Optional.ofNullable(newEventDto.getTitle()).ifPresent(event::setTitle);
@@ -160,12 +160,9 @@ public class PrivateUserEventsService {
             throw new BadRequestException("Moderation not needed");
         }
 
-
-        if (event.getParticipantLimit() <= requestRepository
-                .countByEventAndStatus(event, Status.CONFIRMED)) {
+        if (event.getParticipantLimit() <= requestRepository.countByEventAndStatus(event, Status.CONFIRMED)) {
             throw new ConflictException("Participant limit was reached");
         }
-
 
         List<ParticipationRequest> updatedParticipationRequest = new ArrayList<>();
         for (ParticipationRequest request : requestsEvent) {
