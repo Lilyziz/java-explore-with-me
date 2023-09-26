@@ -23,8 +23,8 @@
         </dependency>
 
         <dependency>
-            <groupId>ru.practicum.client</groupId>
-            <artifactId>client</artifactId>
+            <groupId>ru.practicum</groupId>
+            <artifactId>stats-client</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
