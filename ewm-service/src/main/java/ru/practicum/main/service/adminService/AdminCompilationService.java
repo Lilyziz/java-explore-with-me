@@ -1,4 +1,4 @@
-package ru.practicum.main.service.admin;
+package ru.practicum.main.service.adminService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,10 +18,11 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class AdminCompilationService {
+public class AdminCompilationService implements IAdminCompilationService {
     final CompilationRepository compilationRepository;
     final EventRepository eventRepository;
 
+    @Override
     @Transactional
     public CompilationDto save(NewCompilationDto newCompilationDto) {
         if (newCompilationDto.getEvents() == null) {
@@ -36,13 +37,7 @@ public class AdminCompilationService {
         return CompilationMapper.toCompilationDto(compilationRepository.save(compilation), eventShortDtos);
     }
 
-    @Transactional
-    public void delete(Long id) {
-        compilationRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Compilation with id = " + id + " was not found"));
-        compilationRepository.deleteById(id);
-    }
-
+    @Override
     @Transactional
     public CompilationDto update(Long id, UpdateCompilationRequest newCompilationDto) {
         Compilation compilation = compilationRepository.findById(id)
@@ -57,7 +52,15 @@ public class AdminCompilationService {
         List<EventShortDto> eventShortDtos = events.stream().map(EventMapper::toEventShortDto)
                 .collect(Collectors.toList());
 
-        return CompilationMapper.toCompilationDto(compilationRepository
-                .save(compilation), eventShortDtos);
+        return CompilationMapper.toCompilationDto(compilationRepository.save(compilation), eventShortDtos);
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        compilationRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Compilation with id = " + id + " was not found"));
+
+        compilationRepository.deleteById(id);
     }
 }

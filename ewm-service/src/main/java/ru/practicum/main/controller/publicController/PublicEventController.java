@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.main.dto.EventFullDto;
 import ru.practicum.main.dto.EventShortDto;
-import ru.practicum.main.service.pub.PublicEventService;
+import ru.practicum.main.service.publicService.PublicEventService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;

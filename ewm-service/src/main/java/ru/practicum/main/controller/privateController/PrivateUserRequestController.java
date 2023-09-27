@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.main.dto.ParticipationRequestDto;
-import ru.practicum.main.service.priv.PrivateUserRequestService;
+import ru.practicum.main.service.privateService.PrivateUserRequestService;
 
 import java.util.List;
 

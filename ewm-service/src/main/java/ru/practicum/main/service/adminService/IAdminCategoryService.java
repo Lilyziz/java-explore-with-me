@@ -1,10 +1,12 @@
-package ru.practicum.main.service.admin;
+package ru.practicum.main.service.adminService;
 
+import org.springframework.stereotype.Service;
 import ru.practicum.main.dto.CategoryDto;
 import ru.practicum.main.dto.NewCategoryDto;
 
+@Service
 public interface IAdminCategoryService {
     CategoryDto save(NewCategoryDto newCategoryDto);
-    void delete(Long id);
     CategoryDto update(Long id, NewCategoryDto newCategoryDto);
+    void delete(Long id);
 }

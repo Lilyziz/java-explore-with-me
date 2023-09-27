@@ -1,4 +1,4 @@
-package ru.practicum.main.service.priv;
+package ru.practicum.main.service.privateService;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
