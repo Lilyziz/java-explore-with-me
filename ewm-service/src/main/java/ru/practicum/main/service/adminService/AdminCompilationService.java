@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class AdminCompilationService implements IAdminCompilationService {
-    final CompilationRepository compilationRepository;
-    final EventRepository eventRepository;
+    private final CompilationRepository compilationRepository;
+    private final EventRepository eventRepository;
 
     @Override
     @Transactional

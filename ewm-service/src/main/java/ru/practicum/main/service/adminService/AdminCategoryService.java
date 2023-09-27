@@ -18,8 +18,8 @@ import ru.practicum.main.repository.EventRepository;
 @Service
 @RequiredArgsConstructor
 public class AdminCategoryService implements IAdminCategoryService {
-    final CategoryRepository categoryRepository;
-    final EventRepository eventRepository;
+    private final CategoryRepository categoryRepository;
+    private final EventRepository eventRepository;
 
     @Override
     @Transactional

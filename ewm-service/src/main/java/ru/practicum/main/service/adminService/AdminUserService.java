@@ -1,5 +1,6 @@
 package ru.practicum.main.service.adminService;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,17 +19,26 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-@Transactional
-public class AdminUserService {
-    public static final int MAX_USERNAME_LENGTH = 63;
-    public static final int MAX_DOMAIN_NAME_LENGTH = 63;
-    public static final int MAX_EMAIL_LENGTH = 254;
+@RequiredArgsConstructor
+public class AdminUserService implements IAdminUserService {
+    private static final int MAX_USERNAME_LENGTH = 63;
+    private static final int MAX_DOMAIN_NAME_LENGTH = 63;
+    private static final int MAX_EMAIL_LENGTH = 254;
     private final UserRepository userRepository;
 
-    public AdminUserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    @Override
+    public List<UserDto> getAll(List<Long> ids, Integer from, Integer size) {
+        Page<User> users;
+        if (ids == null) {
+            users = userRepository.findAll(PageRequest.of(from / size, size));
+        } else {
+            users = userRepository.findAllByIdIn(ids, PageRequest.of(from / size, size));
+        }
+
+        return users.stream().map(UserMapper::toUserDto).collect(Collectors.toList());
     }
 
+    @Override
     @Transactional
     public UserDto save(NewUserRequest newUserRequest) {
         String[] emailPart = newUserRequest.getEmail().split("@");
@@ -42,22 +52,12 @@ public class AdminUserService {
         return UserMapper.toUserDto(userRepository.save(UserMapper.toUser(newUserRequest)));
     }
 
+    @Override
     @Transactional
     public void delete(Long id) {
-        User user = userRepository.findById(id).orElseThrow(
+        userRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Пользователь с id " + id + " не найден"));
 
-        userRepository.delete(user);
-    }
-
-    public List<UserDto> getAll(List<Long> ids, Integer from, Integer size) {
-        Page<User> users;
-        if (ids == null) {
-            users = userRepository.findAll(PageRequest.of(from / size, size));
-        } else {
-            users = userRepository.findAllByIdIn(ids, PageRequest.of(from / size, size));
-        }
-
-        return users.stream().map(UserMapper::toUserDto).collect(Collectors.toList());
+        userRepository.deleteById(id);
     }
 }

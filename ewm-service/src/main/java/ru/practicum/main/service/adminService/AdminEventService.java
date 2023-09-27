@@ -1,9 +1,11 @@
 package ru.practicum.main.service.adminService;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.main.dto.EventFullDto;
 import ru.practicum.main.dto.EventMapper;
 import ru.practicum.main.dto.UpdateEventAdminRequest;
@@ -25,21 +27,45 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class AdminEventService {
-    final EventRepository eventRepository;
-    final LocationRepository locationRepository;
-    final RequestRepository requestRepository;
-
-    public AdminEventService(EventRepository eventRepository,
-                             LocationRepository locationRepository,
-                             RequestRepository requestRepository) {
-        this.eventRepository = eventRepository;
-        this.locationRepository = locationRepository;
-        this.requestRepository = requestRepository;
-    }
+@RequiredArgsConstructor
+public class AdminEventService implements IAdminEventService {
+    private final EventRepository eventRepository;
+    private final LocationRepository locationRepository;
+    private final RequestRepository requestRepository;
 
     static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
+    @Override
+    public List<EventFullDto> get(List<Long> userIds, List<String> states, List<Long> categoryIds,
+                                  String rangeStart, String rangeEnd, int from, int size) {
+        List<State> stateList = states == null ? null : states
+                .stream()
+                .map(State::valueOf)
+                .collect(Collectors.toList());
+
+        Pageable pageable = PageRequest.of(from / size, size);
+        LocalDateTime start = rangeStart == null ? null : LocalDateTime.parse(rangeStart, dateTimeFormatter);
+        LocalDateTime end = rangeEnd == null ? null : LocalDateTime.parse(rangeEnd, dateTimeFormatter);
+        List<EventFullDto> events = eventRepository.searchAdminEvents2(userIds, stateList, categoryIds,
+                        start, end, pageable)
+                .stream().map(EventMapper::toEventFullDto).collect(Collectors.toList());
+
+        List<EventFullDto> eventFullDtoList = new ArrayList<>();
+        EventFullDto event = new EventFullDto();
+        for (EventFullDto iter : events) {
+            event = iter;
+            Long eventId = iter.getId();
+            Integer confirmedRequest = requestRepository.countByEventIdAndStatus(eventId,
+                    Status.CONFIRMED);
+            event.setConfirmedRequests(confirmedRequest);
+            eventFullDtoList.add(event);
+        }
+
+        return eventFullDtoList;
+    }
+
+    @Override
+    @Transactional
     public EventFullDto update(Long eventId, UpdateEventAdminRequest adminRequest) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException("Event with id = " + eventId + " was not found"));
@@ -73,34 +99,5 @@ public class AdminEventService {
         Optional.ofNullable(adminRequest.getTitle()).ifPresent(event::setTitle);
 
         return EventMapper.toEventFullDto(eventRepository.save(event));
-    }
-
-
-    public List<EventFullDto> get(List<Long> userIds, List<String> states, List<Long> categoryIds,
-                                  String rangeStart, String rangeEnd, int from, int size) {
-        List<State> stateList = states == null ? null : states
-                .stream()
-                .map(State::valueOf)
-                .collect(Collectors.toList());
-
-        Pageable pageable = PageRequest.of(from / size, size);
-        LocalDateTime start = rangeStart == null ? null : LocalDateTime.parse(rangeStart, dateTimeFormatter);
-        LocalDateTime end = rangeEnd == null ? null : LocalDateTime.parse(rangeEnd, dateTimeFormatter);
-        List<EventFullDto> events = eventRepository.searchAdminEvents2(userIds, stateList, categoryIds,
-                        start, end, pageable)
-                .stream().map(EventMapper::toEventFullDto).collect(Collectors.toList());
-
-        List<EventFullDto> eventFullDtoList = new ArrayList<>();
-        EventFullDto event = new EventFullDto();
-        for (EventFullDto iter : events) {
-            event = iter;
-            Long eventId = iter.getId();
-            Integer confirmedRequest = requestRepository.countByEventIdAndStatus(eventId,
-                    Status.CONFIRMED);
-            event.setConfirmedRequests(confirmedRequest);
-            eventFullDtoList.add(event);
-        }
-
-        return eventFullDtoList;
     }
 }
