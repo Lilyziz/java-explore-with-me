@@ -67,8 +67,8 @@ public class AdminEventService implements IAdminEventService {
     @Override
     @Transactional
     public EventFullDto update(Long eventId, UpdateEventAdminRequest adminRequest) {
-        Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new NotFoundException("Event with id = " + eventId + " was not found"));
+        Event event = eventRepository.findById(eventId).orElseThrow(
+                () -> new NotFoundException("Event with id = " + eventId + " was not found"));
 
         LocalDateTime timeEvent = LocalDateTime.now();
         if (adminRequest != null && adminRequest.getEventDate() != null) {
@@ -78,24 +78,33 @@ public class AdminEventService implements IAdminEventService {
         }
 
         if (event.getState() != null && !event.getState().equals(State.PENDING)) {
-            throw new IllegalStateException("Event in illegal state");
+            throw new IllegalStateException("Event is in illegal state");
         }
 
         Optional.ofNullable(adminRequest.getAnnotation()).ifPresent(event::setAnnotation);
         Optional.ofNullable(adminRequest.getDescription()).ifPresent(event::setDescription);
         event.setEventDate(timeEvent);
-        if (adminRequest.getLocation() != null)
+
+        if (adminRequest.getLocation() != null) {
             locationRepository.save(adminRequest.getLocation());
+        }
+
         event.setLocation(adminRequest.getLocation());
         Optional.ofNullable(adminRequest.getPaid()).ifPresent(event::setPaid);
         Optional.ofNullable(adminRequest.getParticipantLimit()).ifPresent(event::setParticipantLimit);
         Optional.ofNullable(adminRequest.getRequestModeration()).ifPresent(event::setRequestModeration);
-        if (adminRequest.getStateAction() != null)
-            adminRequest.setStateAction(adminRequest.getStateAction().equals("PUBLISH_EVENT") ? "PUBLISHED" : adminRequest.getStateAction());
-        if (adminRequest.getStateAction() != null)
-            adminRequest.setStateAction(adminRequest.getStateAction().equals("REJECT_EVENT") ? "CANCELED" : adminRequest.getStateAction());
-        if (adminRequest.getStateAction() != null)
+
+        if (adminRequest.getStateAction() != null) {
+            adminRequest.setStateAction(adminRequest.getStateAction()
+                    .equals("PUBLISH_EVENT") ? "PUBLISHED" : adminRequest.getStateAction());
+        }
+        if (adminRequest.getStateAction() != null) {
+            adminRequest.setStateAction(adminRequest.getStateAction()
+                    .equals("REJECT_EVENT") ? "CANCELED" : adminRequest.getStateAction());
+        }
+        if (adminRequest.getStateAction() != null) {
             Optional.of(State.valueOf(adminRequest.getStateAction())).ifPresent(event::setState);
+        }
         Optional.ofNullable(adminRequest.getTitle()).ifPresent(event::setTitle);
 
         return EventMapper.toEventFullDto(eventRepository.save(event));

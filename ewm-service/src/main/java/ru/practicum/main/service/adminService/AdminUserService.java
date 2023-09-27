@@ -47,7 +47,7 @@ public class AdminUserService implements IAdminUserService {
         String[] domainPart = emailPart[1].split("\\.");
         if (emailPart[1].length() > MAX_DOMAIN_NAME_LENGTH
                 && newUserRequest.getEmail().length() != MAX_EMAIL_LENGTH)
-            throw new BadRequestException("Domain length must be less then 63");
+            throw new BadRequestException("Domain length must be less then 64");
 
         return UserMapper.toUserDto(userRepository.save(UserMapper.toUser(newUserRequest)));
     }

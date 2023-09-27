@@ -60,7 +60,7 @@ public class PrivateUserEventsController {
     public List<ParticipationRequestDto> getByIdRequests(@PathVariable Long userId,
                                                          @PathVariable Long eventId) {
         log.debug(String.valueOf(LogMessages.TRY_GET_OBJECT), "СОБЫТИЕ");
-        return privateUserEventsService.getByIdUsersEvensRequests(eventId, userId);
+        return privateUserEventsService.getByIdUsersEventsRequests(eventId, userId);
     }
 
 
