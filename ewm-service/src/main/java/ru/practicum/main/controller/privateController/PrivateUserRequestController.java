@@ -1,5 +1,6 @@
 package ru.practicum.main.controller.privateController;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -8,15 +9,12 @@ import ru.practicum.main.service.privateService.PrivateUserRequestService;
 
 import java.util.List;
 
-@RestController
 @Slf4j
+@RestController
+@AllArgsConstructor
 @RequestMapping("/users/{userId}/requests")
 public class PrivateUserRequestController {
     private final PrivateUserRequestService privateUserRequestService;
-
-    public PrivateUserRequestController(PrivateUserRequestService privateUserRequestService) {
-        this.privateUserRequestService = privateUserRequestService;
-    }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

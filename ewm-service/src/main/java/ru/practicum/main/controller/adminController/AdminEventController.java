@@ -11,18 +11,11 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
-@RequestMapping("/admin/events")
 @RestController
 @AllArgsConstructor
+@RequestMapping("/admin/events")
 public class AdminEventController {
     private final AdminEventService adminEventService;
-
-    @PatchMapping("/{eventId}")
-    public EventFullDto update(@PathVariable Long eventId,
-                               @Valid @RequestBody UpdateEventAdminRequest adminRequest) {
-        log.debug("Update events with id {} with content: {}", eventId, adminRequest);
-        return adminEventService.update(eventId, adminRequest);
-    }
 
     @GetMapping
     public List<EventFullDto> getAll(@RequestParam(required = false) List<Long> users,
@@ -34,6 +27,15 @@ public class AdminEventController {
                                      @RequestParam(defaultValue = "10") int size) {
         log.info("Get events by admin with parameters: users = {}, states = {}, categories = {}, rangeStart = {}, " +
                 "rangeEnd = {}, from = {}, size = {}", users, states, categories, rangeStart, rangeEnd, from, size);
+
         return adminEventService.get(users, states, categories, rangeStart, rangeEnd, from, size);
+    }
+
+    @PatchMapping("/{eventId}")
+    public EventFullDto update(@PathVariable Long eventId,
+                               @Valid @RequestBody UpdateEventAdminRequest adminRequest) {
+        log.debug("Update events with id {} with content: {}", eventId, adminRequest);
+
+        return adminEventService.update(eventId, adminRequest);
     }
 }

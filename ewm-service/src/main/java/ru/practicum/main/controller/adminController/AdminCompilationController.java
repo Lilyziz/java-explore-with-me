@@ -13,30 +13,32 @@ import javax.validation.Valid;
 
 @Slf4j
 @RestController
-@RequestMapping("/admin/compilations")
 @AllArgsConstructor
+@RequestMapping("/admin/compilations")
 public class AdminCompilationController {
     private final AdminCompilationService adminCompilationService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CompilationDto saveA(@RequestBody @Valid NewCompilationDto newCompilationDto) {
+    public CompilationDto save(@RequestBody @Valid NewCompilationDto newCompilationDto) {
         log.debug("Add compilation: {}", newCompilationDto);
-        return adminCompilationService.save(newCompilationDto);
-    }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        log.debug("Delete compilation with id {}", id);
-        adminCompilationService.delete(id);
+        return adminCompilationService.save(newCompilationDto);
     }
 
     @PatchMapping("/{id}")
     public CompilationDto update(@PathVariable Long id,
                                  @RequestBody @Valid UpdateCompilationRequest updateCompilationRequest) {
         log.debug("Update compilation with id {} with content: {}", id, updateCompilationRequest);
+
         return adminCompilationService.update(id, updateCompilationRequest);
     }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
+        log.debug("Delete compilation with id {}", id);
+
+        adminCompilationService.delete(id);
+    }
 }
