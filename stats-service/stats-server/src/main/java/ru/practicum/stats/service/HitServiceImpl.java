@@ -57,9 +57,7 @@ public class HitServiceImpl implements IHitService {
         }
         cnt = hitRepository.findAll().size();
 
-        viewStats.sort((d1, d2) -> {
-            return d2.getHits().intValue() - d1.getHits().intValue();
-        });
+        viewStats.sort((d1, d2) -> d2.getHits().intValue() - d1.getHits().intValue());
 
         return viewStats;
     }
