@@ -19,6 +19,8 @@ public class PrivateUserRequestController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<ParticipationRequestDto> getAll(@PathVariable Long userId) {
+        log.debug("Get all requests by user with id {}", userId);
+
         return privateUserRequestService.getAll(userId);
     }
 
@@ -26,12 +28,16 @@ public class PrivateUserRequestController {
     @ResponseStatus(HttpStatus.CREATED)
     public ParticipationRequestDto save(@PathVariable Long userId,
                                         @RequestParam Long eventId) {
+        log.debug("Add request for event with id {} by user with id {}", eventId, userId);
+
         return privateUserRequestService.save(userId, eventId);
     }
 
     @PatchMapping("/{requestId}/cancel")
     public ParticipationRequestDto update(@PathVariable Long userId,
                                           @PathVariable Long requestId) {
+        log.debug("Cancel request for request with id {} by user with id {}", requestId, userId);
+
         return privateUserRequestService.updateAndCancel(userId, requestId);
     }
 }
