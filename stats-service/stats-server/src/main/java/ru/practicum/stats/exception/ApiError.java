@@ -8,18 +8,13 @@ import org.springframework.http.HttpStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
-@Setter
-@ToString
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@Data
 @Builder(toBuilder = true)
 public class ApiError {
     List<String> errors;
 
     String message;
-
     String reason;
-
     HttpStatus status;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")

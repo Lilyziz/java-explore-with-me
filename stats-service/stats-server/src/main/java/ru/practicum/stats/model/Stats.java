@@ -9,12 +9,13 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "hits")
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
+@Entity
+@Table(name = "hits")
 public class Stats {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

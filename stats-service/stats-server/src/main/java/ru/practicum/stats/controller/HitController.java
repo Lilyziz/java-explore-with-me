@@ -18,13 +18,6 @@ import java.util.Optional;
 public class HitController {
     private final HitServiceImpl hitService;
 
-    @PostMapping("/hit")
-    @ResponseStatus(HttpStatus.CREATED)
-    public HitDto save(@RequestBody Stats stats) {
-        log.debug("Received stats {}", stats);
-        return hitService.save(stats);
-    }
-
     @GetMapping("/stats")
     @ResponseStatus(HttpStatus.OK)
     public List<ViewStats> getStats(@RequestParam String start,
@@ -36,6 +29,15 @@ public class HitController {
                 " end = {}," +
                 " uris = {}," +
                 " unique = {}", start, end, uris, unique);
+
         return hitService.getStats(start, end, uris, unique);
+    }
+
+    @PostMapping("/hit")
+    @ResponseStatus(HttpStatus.CREATED)
+    public HitDto save(@RequestBody Stats stats) {
+        log.debug("Received stats {}", stats);
+
+        return hitService.save(stats);
     }
 }

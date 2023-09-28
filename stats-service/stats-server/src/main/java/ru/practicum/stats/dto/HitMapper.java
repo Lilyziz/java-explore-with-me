@@ -1,10 +1,12 @@
 package ru.practicum.stats.dto;
 
+import lombok.experimental.UtilityClass;
 import ru.practicum.dto.HitDto;
 import ru.practicum.stats.model.Stats;
 
 import java.time.LocalDateTime;
 
+@UtilityClass
 public class HitMapper {
     public static HitDto toHitDto(Stats stats) {
         return HitDto.builder()

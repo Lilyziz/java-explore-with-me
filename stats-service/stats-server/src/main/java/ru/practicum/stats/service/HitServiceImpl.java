@@ -4,11 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.dto.HitDto;
-import ru.practicum.stats.repository.HitRepository;
 import ru.practicum.stats.dto.HitMapper;
 import ru.practicum.stats.dto.ViewStats;
 import ru.practicum.stats.exception.DateException;
 import ru.practicum.stats.model.Stats;
+import ru.practicum.stats.repository.HitRepository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -24,17 +24,6 @@ import java.util.stream.Collectors;
 public class HitServiceImpl implements IHitService {
     private final HitRepository hitRepository;
     private Integer cnt = 0;
-
-    @Override
-    public HitDto save(Stats stats) {
-        HitDto hitDto = HitMapper.toHitDto(hitRepository.save(stats));
-
-        List<String> uris = hitRepository.findAll().stream().map(e -> e.getUri()).collect(Collectors.toList());
-        Integer hits = uris.stream().filter(e -> e.equals(stats.getUri())).collect(Collectors.toList()).size();
-        hitDto.setHit(hits);
-
-        return hitDto;
-    }
 
     @Override
     public List<ViewStats> getStats(String startStr, String endStr, Optional<List<String>> uris, Boolean isUnique) {
@@ -68,10 +57,21 @@ public class HitServiceImpl implements IHitService {
         }
         cnt = hitRepository.findAll().size();
 
-        Collections.sort(viewStats, (d1, d2) -> {
+        viewStats.sort((d1, d2) -> {
             return d2.getHits().intValue() - d1.getHits().intValue();
         });
 
         return viewStats;
+    }
+
+    @Override
+    public HitDto save(Stats stats) {
+        HitDto hitDto = HitMapper.toHitDto(hitRepository.save(stats));
+
+        List<String> uris = hitRepository.findAll().stream().map(Stats::getUri).collect(Collectors.toList());
+        Integer hits = (int) uris.stream().filter(e -> e.equals(stats.getUri())).count();
+        hitDto.setHit(hits);
+
+        return hitDto;
     }
 }

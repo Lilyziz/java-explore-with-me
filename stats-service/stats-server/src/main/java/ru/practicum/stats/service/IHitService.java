@@ -10,7 +10,6 @@ import java.util.Optional;
 
 @Service
 public interface IHitService {
-    HitDto save(Stats stats);
-
     List<ViewStats> getStats(String startStr, String endStr, Optional<List<String>> uris, Boolean isUnique);
+    HitDto save(Stats stats);
 }
