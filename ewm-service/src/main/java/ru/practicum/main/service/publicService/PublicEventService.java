@@ -57,7 +57,7 @@ public class PublicEventService implements IPublicEventService {
                                       Integer size, HttpServletRequest request) {
 
 
-        if (categories.size() < 1 || (text != null && text.length() < 2)) {
+        if (categories.isEmpty() || (text != null && text.length() < 2)) {
             throw new BadRequestException("Text must be longer then 2");
         }
 
