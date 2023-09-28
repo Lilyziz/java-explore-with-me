@@ -13,6 +13,7 @@ import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @Component
@@ -32,10 +33,12 @@ public class StatsServer {
         String ip = request.getHeader("host").split(":")[0];
         EndpointHit endpointHit = new EndpointHit("ewm-main-service", uri, ip, dateTime);
 
-        httpClient.postHit(host, "{\"app\":\"ewm-main-service\"," +
-                "\"uri\":\"" + uri + "\"," +
-                "\"ip\":\"" + ip + "\"," +
-                "\"timestamp\":\"" + dateTime + "\"}");
+        httpClient.postHit(host, String.valueOf(EndpointHit.builder()
+                .app("ewm-main-service")
+                .uri(uri)
+                .ip(ip)
+                .timestamp(dateTime)
+                .build()));
     }
 
     public Integer requeryViews(String uris) throws IOException, InterruptedException {
