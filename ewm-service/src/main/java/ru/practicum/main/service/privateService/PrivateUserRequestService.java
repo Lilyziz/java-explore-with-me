@@ -1,5 +1,6 @@
 package ru.practicum.main.service.privateService;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,21 +20,14 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class PrivateUserRequestService {
-    final RequestRepository requestRepository;
-    UserRepository userRepository;
-    final EventRepository eventRepository;
+@RequiredArgsConstructor
+public class PrivateUserRequestService implements IPrivateUserRequestService {
+    private final RequestRepository requestRepository;
+    private final UserRepository userRepository;
+    private final EventRepository eventRepository;
 
-    public PrivateUserRequestService(RequestRepository requestRepository,
-                                     UserRepository userRepository,
-                                     EventRepository eventRepository) {
-        this.requestRepository = requestRepository;
-        this.userRepository = userRepository;
-        this.eventRepository = eventRepository;
-    }
-
-
-    public List<ParticipationRequestDto> getAllUserRequest(Long userId) {
+    @Override
+    public List<ParticipationRequestDto> getAll(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new NotFoundException("User with id = " + userId + " was not found"));
 
@@ -42,8 +36,9 @@ public class PrivateUserRequestService {
                 .collect(Collectors.toList());
     }
 
+    @Override
     @Transactional
-    public ParticipationRequestDto saveUserRequest(Long userId, Long eventId) {
+    public ParticipationRequestDto save(Long userId, Long eventId) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new NotFoundException("User with id = " + userId + " was not found"));
         Event event = eventRepository.findById(eventId).orElseThrow(
@@ -77,8 +72,9 @@ public class PrivateUserRequestService {
         return ParticipationRequestMapper.toParticipationRequestDto(requestRepository.save(participation));
     }
 
+    @Override
     @Transactional
-    public ParticipationRequestDto updateUserRequestCancel(Long userId, Long requestId) {
+    public ParticipationRequestDto updateAndCancel(Long userId, Long requestId) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new NotFoundException("User with id = " + userId + " was not found"));
 

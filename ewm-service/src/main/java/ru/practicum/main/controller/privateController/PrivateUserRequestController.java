@@ -21,19 +21,19 @@ public class PrivateUserRequestController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<ParticipationRequestDto> getAll(@PathVariable Long userId) {
-        return privateUserRequestService.getAllUserRequest(userId);
+        return privateUserRequestService.getAll(userId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ParticipationRequestDto save(@PathVariable Long userId,
                                         @RequestParam Long eventId) {
-        return privateUserRequestService.saveUserRequest(userId, eventId);
+        return privateUserRequestService.save(userId, eventId);
     }
 
     @PatchMapping("/{requestId}/cancel")
     public ParticipationRequestDto update(@PathVariable Long userId,
                                           @PathVariable Long requestId) {
-        return privateUserRequestService.updateUserRequestCancel(userId, requestId);
+        return privateUserRequestService.updateAndCancel(userId, requestId);
     }
 }

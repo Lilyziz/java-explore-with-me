@@ -24,12 +24,12 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class PrivateUserEventsService implements IPrivateUserEventsService {
-    final UserRepository userRepository;
-    final EventRepository eventRepository;
-    final CategoryRepository categoryRepository;
-    final LocationRepository locationRepository;
-    final RequestRepository requestRepository;
-    static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private final UserRepository userRepository;
+    private final EventRepository eventRepository;
+    private final CategoryRepository categoryRepository;
+    private final LocationRepository locationRepository;
+    private final RequestRepository requestRepository;
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
     public List<ParticipationRequestDto> getByIdUsersEventsRequests(Long eventId, Long userId) {
