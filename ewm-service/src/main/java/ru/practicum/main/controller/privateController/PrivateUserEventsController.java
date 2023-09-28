@@ -50,7 +50,6 @@ public class PrivateUserEventsController {
     public EventFullDto update(@PathVariable Long userId,
                                @PathVariable Long eventId,
                                @Valid @RequestBody UpdateEventUserRequest eventUserRequestDto) {
-        log.debug(String.valueOf(LogMessages.TRY_UPDATE), "СОБЫТИЕ");
         return privateUserEventsService.update(userId, eventId, eventUserRequestDto);
     }
 
@@ -59,7 +58,6 @@ public class PrivateUserEventsController {
     @ResponseStatus(HttpStatus.OK)
     public List<ParticipationRequestDto> getByIdRequests(@PathVariable Long userId,
                                                          @PathVariable Long eventId) {
-        log.debug(String.valueOf(LogMessages.TRY_GET_OBJECT), "СОБЫТИЕ");
         return privateUserEventsService.getByIdUsersEventsRequests(eventId, userId);
     }
 
@@ -68,7 +66,6 @@ public class PrivateUserEventsController {
     public EventRequestStatusUpdateResult updatRequests(@PathVariable Long userId,
                                                         @PathVariable Long eventId,
                                                         @RequestBody EventRequestStatusUpdateRequest eventRequestStatusUpdateRequest) {
-        log.debug(String.valueOf(LogMessages.TRY_UPDATE), "СОБЫТИЯ");
         return privateUserEventsService.updateUsersEventsRequests(userId, eventId, eventRequestStatusUpdateRequest);
     }
 

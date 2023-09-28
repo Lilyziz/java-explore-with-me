@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class AdminCompilationService implements IAdminCompilationService {
     private final CompilationRepository compilationRepository;

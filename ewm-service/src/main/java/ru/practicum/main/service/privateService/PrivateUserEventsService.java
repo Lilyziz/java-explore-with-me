@@ -21,7 +21,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class PrivateUserEventsService implements IPrivateUserEventsService {
     private final UserRepository userRepository;

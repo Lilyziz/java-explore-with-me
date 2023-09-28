@@ -1,9 +1,6 @@
 package ru.practicum.main.service.publicService;
 
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,25 +26,39 @@ import java.util.stream.Collectors;
 
 import static ru.practicum.main.model.State.PUBLISHED;
 
-@Slf4j
 @Service
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
-public class PublicEventService {
+public class PublicEventService implements IPublicEventService {
+    private final EventRepository eventRepository;
+    private final RequestRepository requestRepository;
+    private final StatsServer statsServer;
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    final EventRepository eventRepository;
-    final RequestRepository requestRepository;
-    final StatsServer statsServer;
+    @Override
+    public EventFullDto getById(Long eventId, HttpServletRequest request) throws IOException, InterruptedException {
+        Event event = eventRepository.findById(eventId).orElseThrow(
+                () -> new NotFoundException("Compilation with id " + eventId + " was not found"));
 
+        if (event.getState() == null || !event.getState().equals(State.PUBLISHED))
+            throw new NotFoundException("Event is not published");
+
+        statsServer.saveHit(request);
+
+        Integer currentViews = statsServer.requeryViews(request.getRequestURI());
+        event.setViews(currentViews);
+        eventRepository.save(event);
+
+        return EventMapper.toEventFullDto(event);
+    }
+
+    @Override
     public List<EventShortDto> getAll(String text, List<Long> categories, Boolean paid, String rangeStart,
                                       String rangeEnd, Boolean onlyAvailable, String sort, Integer from,
-                                      Integer size, HttpServletRequest request)
-            throws IOException, InterruptedException {
+                                      Integer size, HttpServletRequest request) {
 
 
         if (categories.size() < 1 || (text != null && text.length() < 2)) {
-            throw new BadRequestException("Текст запроса должен содержать сообщение длинойбольше двух");
+            throw new BadRequestException("Text must be longer then 2");
         }
 
         Pageable pageable = PageRequest.of(from / size, size);
@@ -76,38 +87,19 @@ public class PublicEventService {
 
         return events
                 .stream()
-                .peek(e -> incrementViews(e.getId()))
+                .peek(e -> addViews(e.getId()))
                 .peek(e -> {
                     try {
                         statsServer.saveHit(request);
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    } catch (InterruptedException ex) {
+                    } catch (IOException | InterruptedException ex) {
                         throw new RuntimeException(ex);
                     }
                 })
-
                 .map(EventMapper::toEventShortDto)
                 .collect(Collectors.toList());
     }
 
-    public EventFullDto getById(Long eventId, HttpServletRequest request) throws IOException, InterruptedException {
-        Event event = eventRepository.findById(eventId).orElseThrow(
-                () -> new NotFoundException("Compilation with id " + eventId + " was not found"));
-
-        if (event.getState() == null || !event.getState().equals(State.PUBLISHED))
-            throw new NotFoundException("Event is not published");
-
-        statsServer.saveHit(request);
-
-        Integer currentViews = statsServer.requeryViews(request.getRequestURI());
-        event.setViews(currentViews);
-        eventRepository.save(event);
-
-        return EventMapper.toEventFullDto(event);
-    }
-
-    private void incrementViews(Long id) {
+    private void addViews(Long id) {
         Event event = eventRepository.findById(id).get();
         Integer views = event.getViews() + 1;
         event.setViews(views);

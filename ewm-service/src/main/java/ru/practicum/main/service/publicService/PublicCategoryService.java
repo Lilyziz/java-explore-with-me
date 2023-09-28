@@ -1,6 +1,6 @@
 package ru.practicum.main.service.publicService;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -13,24 +13,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j
-public class PublicCategoryService {
+@RequiredArgsConstructor
+public class PublicCategoryService implements IPublicCategoryService {
     private final CategoryRepository categoryRepository;
 
-    public PublicCategoryService(
-            CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
+    @Override
+    public CategoryDto getById(Long catId) {
+        return CategoryMapper.toCategoryDto(categoryRepository.findById(catId).orElseThrow(
+                () -> new NotFoundException("Category was not found")));
     }
 
+    @Override
     public List<CategoryDto> getAll(Integer from, Integer size) {
         Pageable pageable = PageRequest.of(from / size, size);
         return categoryRepository.findAll(pageable).stream()
                 .map(CategoryMapper::toCategoryDto)
                 .collect(Collectors.toList());
-    }
-
-    public CategoryDto getById(Long catId) {
-        return CategoryMapper.toCategoryDto(categoryRepository.findById(catId).orElseThrow(
-                () -> new NotFoundException("Category was not found")));
     }
 }

@@ -14,7 +14,6 @@ import ru.practicum.main.model.Category;
 import ru.practicum.main.repository.CategoryRepository;
 import ru.practicum.main.repository.EventRepository;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AdminCategoryService implements IAdminCategoryService {

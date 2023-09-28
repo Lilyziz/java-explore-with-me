@@ -18,12 +18,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
-public class PublicCompilationService {
+public class PublicCompilationService implements IPublicCompilationService {
     private final CompilationRepository compilationRepository;
 
+    @Override
+    public CompilationDto getById(Long compId) {
 
+        Compilation compilations = compilationRepository.findById(compId).orElseThrow(
+                () -> new NotFoundException("Compilation with id " + compId + " was not found"));
+
+        List<EventShortDto> eventShortDtos = compilations.getEvents().stream()
+                .map(EventMapper::toEventShortDto).collect(Collectors.toList());
+
+        return CompilationMapper.toCompilationDto(compilations, eventShortDtos);
+    }
+
+    @Override
     public List<CompilationDto> getAll(Boolean pinned, Integer from, Integer size) {
         Page<Compilation> compilations;
         if (pinned != null)
@@ -41,18 +52,4 @@ public class PublicCompilationService {
 
         return compilationDtos;
     }
-
-
-    public CompilationDto getById(Long compId) {
-
-        Compilation compilations = compilationRepository.findById(compId).orElseThrow(
-                () -> new NotFoundException("Compilation with id " + compId + " was not found"));
-
-        List<EventShortDto> eventShortDtos = compilations.getEvents().stream()
-                .map(EventMapper::toEventShortDto).collect(Collectors.toList());
-
-        return CompilationMapper.toCompilationDto(compilations, eventShortDtos);
-    }
-
-
 }

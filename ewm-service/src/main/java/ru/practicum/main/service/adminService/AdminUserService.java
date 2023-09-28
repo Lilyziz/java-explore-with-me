@@ -17,7 +17,6 @@ import ru.practicum.main.repository.UserRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AdminUserService implements IAdminUserService {
