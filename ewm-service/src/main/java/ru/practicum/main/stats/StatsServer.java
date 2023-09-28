@@ -16,10 +16,10 @@ import java.util.Map;
 
 @Component
 public class StatsServer {
-    static HttpClient httpClient = new HttpClient();
-    static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    static String dateTime = LocalDateTime.now().format(dateTimeFormatter);
-    ConfigClient configClient;
+    private static final HttpClient httpClient = new HttpClient();
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final String dateTime = LocalDateTime.now().format(dateTimeFormatter);
+    private final ConfigClient configClient;
 
     public StatsServer(ConfigClient configClient) {
         this.configClient = configClient;
@@ -29,7 +29,7 @@ public class StatsServer {
         String host = configClient.getStatServerUrl();
         String uri = request.getRequestURI();
         String ip = request.getHeader("host").split(":")[0];
-        
+
         httpClient.postHit(host, "{\"app\":\"ewm-main-service\"," +
                 "\"uri\":\"" + uri + "\"," +
                 "\"ip\":\"" + ip + "\"," +
