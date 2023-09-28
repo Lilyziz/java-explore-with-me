@@ -2,6 +2,7 @@ package ru.practicum.main.stats;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.practicum.client.BaseClient;
 import ru.practicum.client.HttpClient;
@@ -23,6 +24,9 @@ public class StatsServer {
     private static final String dateTime = LocalDateTime.now().format(dateTimeFormatter);
     private final ConfigClient configClient;
 
+    @Value("${app.name}")
+    private static String name;
+
     public StatsServer(ConfigClient configClient) {
         this.configClient = configClient;
     }
@@ -30,15 +34,20 @@ public class StatsServer {
     public void saveHit(HttpServletRequest request) throws IOException, InterruptedException {
         String host = configClient.getStatServerUrl();
         String uri = request.getRequestURI();
-        String ip = request.getHeader("host").split(":")[0];
-        EndpointHit endpointHit = new EndpointHit("ewm-main-service", uri, ip, dateTime);
 
-        httpClient.postHit(host, String.valueOf(EndpointHit.builder()
-                .app("ewm-main-service")
-                .uri(uri)
-                .ip(ip)
-                .timestamp(dateTime)
-                .build()));
+        String ip = request.getHeader("host").split(":")[0];
+
+        //httpClient.postHit(host, String.valueOf(EndpointHit.builder()
+        //        .app(name)
+        //        .uri(uri)
+        //        .ip(ip)
+        //        .timestamp(dateTime)
+        //        .build()));
+
+        httpClient.postHit(host, "{\"app\":\"ewm-main-service\"," +
+                "\"uri\":\"" + uri + "\"," +
+                "\"ip\":\"" + ip + "\"," +
+                "\"timestamp\":\"" + dateTime + "\"}");
     }
 
     public Integer requeryViews(String uris) throws IOException, InterruptedException {
