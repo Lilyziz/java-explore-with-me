@@ -30,7 +30,8 @@ public class StatsServer {
         String host = configClient.getStatServerUrl();
         String uri = request.getRequestURI();
         String ip = request.getHeader("host").split(":")[0];
-        EndpointHit endpointHit = new EndpointHit(null, "ewm-main-service", uri, ip, LocalDateTime.now());
+        EndpointHit endpointHit = new EndpointHit(null, "ewm-main-service", uri, ip, dateTime);
+
         httpClient.postHit(host, endpointHit.toString());
     }
 

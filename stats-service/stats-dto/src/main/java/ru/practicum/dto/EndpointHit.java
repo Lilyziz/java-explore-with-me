@@ -14,5 +14,5 @@ public class EndpointHit {
     String app;
     String uri;
     String ip;
-    LocalDateTime timestamp;
+    String timestamp;
 }
