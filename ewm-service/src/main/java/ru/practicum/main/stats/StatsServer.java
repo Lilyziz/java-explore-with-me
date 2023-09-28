@@ -30,12 +30,9 @@ public class StatsServer {
         String host = configClient.getStatServerUrl();
         String uri = request.getRequestURI();
         String ip = request.getHeader("host").split(":")[0];
-        EndpointHit endpointHit = new EndpointHit(null, "ewm-main-service", uri, ip, dateTime);
+        EndpointHit endpointHit = new EndpointHit("ewm-main-service", uri, ip, dateTime);
 
-        httpClient.postHit(host, "{\"app\":\"ewm-main-service\"," +
-                "\"uri\":\"" + uri + "\"," +
-                "\"ip\":\"" + ip + "\"," +
-                "\"timestamp\":\"" + dateTime + "\"}");
+        httpClient.postHit(host, endpointHit.toString());
     }
 
     public Integer requeryViews(String uris) throws IOException, InterruptedException {

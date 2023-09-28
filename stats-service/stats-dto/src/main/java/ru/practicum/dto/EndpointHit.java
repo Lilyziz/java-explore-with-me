@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EndpointHit {
-    Long id;
     String app;
     String uri;
     String ip;
