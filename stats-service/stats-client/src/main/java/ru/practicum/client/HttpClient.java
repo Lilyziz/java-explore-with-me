@@ -11,7 +11,6 @@ import java.net.URI;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-@Component
 public class HttpClient {
     @Value("${server.port}")
     String port;
