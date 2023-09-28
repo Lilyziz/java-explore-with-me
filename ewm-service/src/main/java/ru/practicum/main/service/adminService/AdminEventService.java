@@ -50,9 +50,9 @@ public class AdminEventService implements IAdminEventService {
 
         List<EventFullDto> eventFullDtoList = new ArrayList<>();
         EventFullDto event = new EventFullDto();
-        for (EventFullDto iter : events) {
-            event = iter;
-            Long eventId = iter.getId();
+        for (EventFullDto item : events) {
+            event = item;
+            Long eventId = item.getId();
             Integer confirmedRequest = requestRepository.countByEventIdAndStatus(eventId,
                     Status.CONFIRMED);
             event.setConfirmedRequests(confirmedRequest);
