@@ -13,7 +13,7 @@ import java.net.http.HttpResponse;
 
 public class HttpClient {
     @Value("${server.port}")
-    String port;
+    Integer port;
 
     public HttpResponse<String> postHit(String host, String hit) throws IOException, InterruptedException {
 
