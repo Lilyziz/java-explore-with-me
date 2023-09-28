@@ -20,12 +20,10 @@ public class Compilation {
     Long id;
 
     @ManyToMany
-    @JoinTable(name = "compilation_event",
-            joinColumns = {@JoinColumn(name = "compilation_id")},
+    @JoinTable(name = "compilation_event", joinColumns = {@JoinColumn(name = "compilation_id")},
             inverseJoinColumns = {@JoinColumn(name = "event_id")})
     List<Event> events;
 
     Boolean pinned;
-
     String title;
 }

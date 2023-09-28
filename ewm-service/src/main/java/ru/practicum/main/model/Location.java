@@ -20,6 +20,5 @@ public class Location {
     Long id;
 
     Float lat;
-
     Float lon;
 }
