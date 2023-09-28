@@ -17,11 +17,8 @@ import java.util.Map;
 @Component
 public class StatsServer {
     static HttpClient httpClient = new HttpClient();
-
     static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
     static String dateTime = LocalDateTime.now().format(dateTimeFormatter);
-
     ConfigClient configClient;
 
     public StatsServer(ConfigClient configClient) {
