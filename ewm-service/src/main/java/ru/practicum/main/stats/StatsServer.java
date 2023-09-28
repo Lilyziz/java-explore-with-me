@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
 import ru.practicum.client.BaseClient;
 import ru.practicum.client.HttpClient;
+import ru.practicum.dto.EndpointHit;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -29,11 +30,8 @@ public class StatsServer {
         String host = configClient.getStatServerUrl();
         String uri = request.getRequestURI();
         String ip = request.getHeader("host").split(":")[0];
-
-        httpClient.postHit(host, "{\"app\":\"ewm-main-service\"," +
-                "\"uri\":\"" + uri + "\"," +
-                "\"ip\":\"" + ip + "\"," +
-                "\"timestamp\":\"" + dateTime + "\"}");
+        EndpointHit endpointHit = new EndpointHit(null, "ewm-main-service", uri, ip, LocalDateTime.now());
+        httpClient.postHit(host, endpointHit.toString());
     }
 
     public Integer requeryViews(String uris) throws IOException, InterruptedException {
