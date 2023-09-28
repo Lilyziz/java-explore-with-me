@@ -30,8 +30,3 @@ public class HttpClient {
                 .send(requestEvent, HttpResponse.BodyHandlers.ofString());
     }
 }
-
-
-
-
-
