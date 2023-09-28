@@ -64,7 +64,7 @@ public class PublicEventService implements IPublicEventService {
         Pageable pageable = PageRequest.of(from / size, size);
         LocalDateTime start = rangeStart == null ? null : LocalDateTime.parse(rangeStart, dateTimeFormatter);
         LocalDateTime end = rangeEnd == null ? null : LocalDateTime.parse(rangeEnd, dateTimeFormatter);
-        List<Event> events = eventRepository.searchEvents2(text, PUBLISHED, categories, paid, start, end, pageable);
+        List<Event> events = eventRepository.findEvents(text, PUBLISHED, categories, paid, start, end, pageable);
 
         if (Boolean.TRUE.equals(onlyAvailable)) {
             events = events.stream().filter(e -> e.getParticipantLimit() < requestRepository

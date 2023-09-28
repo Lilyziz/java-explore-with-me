@@ -36,7 +36,7 @@ public class PrivateUserRequestController {
     @PatchMapping("/{requestId}/cancel")
     public ParticipationRequestDto update(@PathVariable Long userId,
                                           @PathVariable Long requestId) {
-        log.debug("Cancel request for request with id {} by user with id {}", requestId, userId);
+        log.debug("Cancel request with id {} by user with id {}", requestId, userId);
 
         return privateUserRequestService.updateAndCancel(userId, requestId);
     }

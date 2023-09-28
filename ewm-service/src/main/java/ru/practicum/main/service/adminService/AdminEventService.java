@@ -1,7 +1,6 @@
 package ru.practicum.main.service.adminService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -45,7 +44,7 @@ public class AdminEventService implements IAdminEventService {
         Pageable pageable = PageRequest.of(from / size, size);
         LocalDateTime start = rangeStart == null ? null : LocalDateTime.parse(rangeStart, dateTimeFormatter);
         LocalDateTime end = rangeEnd == null ? null : LocalDateTime.parse(rangeEnd, dateTimeFormatter);
-        List<EventFullDto> events = eventRepository.searchAdminEvents2(userIds, stateList, categoryIds,
+        List<EventFullDto> events = eventRepository.findAdminEvents(userIds, stateList, categoryIds,
                         start, end, pageable)
                 .stream().map(EventMapper::toEventFullDto).collect(Collectors.toList());
 

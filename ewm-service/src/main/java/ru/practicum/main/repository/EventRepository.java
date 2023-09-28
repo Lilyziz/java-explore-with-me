@@ -23,7 +23,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             "AND (:categories IS NULL OR e.category.id IN :categories) " +
             "AND (cast(:rangeStart AS java.time.LocalDateTime) IS NULL OR e.eventDate >= :rangeStart) " +
             "AND (cast(:rangeEnd AS java.time.LocalDateTime) IS NULL OR e.eventDate <= :rangeEnd)")
-    List<Event> searchAdminEvents2(
+    List<Event> findAdminEvents(
             @Param("users") List<Long> users,
             @Param("states") List<State> states,
             @Param("categories") List<Long> categories,
@@ -34,18 +34,18 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     Boolean existsByIdAndState(Long eventId, State state);
 
     @Query("SELECT e FROM Event AS e " +
-            " WHERE ((:text IS NULL OR lower(e.annotation) like lower(concat('%', :text, '%'))) " +
-            " OR (:text IS NULL OR lower(e.description) like lower(concat('%', :text, '%')))) " +
+            " WHERE ((:text IS NULL OR lower(e.annotation) LIKE lower(concat('%', :text, '%'))) " +
+            " OR (:text IS NULL OR lower(e.description) LIKE lower(concat('%', :text, '%')))) " +
             " AND (:state IS NULL OR e.state = :state) " +
             " AND (:categories IS NULL OR e.category.id IN :categories) " +
             " AND (:paid IS NULL OR e.paid = :paid) " +
             " AND (cast(:rangeStart AS java.time.LocalDateTime) IS NULL OR e.eventDate >= :rangeStart) " +
             " AND (cast(:rangeEnd AS java.time.LocalDateTime) IS NULL OR e.eventDate <= :rangeEnd)")
-    List<Event> searchEvents2(@Param("text") String text,
-                              @Param("state") State state,
-                              @Param("categories") List<Long> categories,
-                              @Param("paid") Boolean paid,
-                              @Param("rangeStart") LocalDateTime rangeStart,
-                              @Param("rangeEnd") LocalDateTime rangeEnd,
-                              Pageable pageable);
+    List<Event> findEvents(@Param("text") String text,
+                           @Param("state") State state,
+                           @Param("categories") List<Long> categories,
+                           @Param("paid") Boolean paid,
+                           @Param("rangeStart") LocalDateTime rangeStart,
+                           @Param("rangeEnd") LocalDateTime rangeEnd,
+                           Pageable pageable);
 }
