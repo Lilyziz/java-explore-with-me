@@ -37,18 +37,18 @@ public class StatsServer {
 
         String ip = request.getHeader("host").split(":")[0];
 
-        httpClient.postHit(host, EndpointHit.builder()
-                .app(name)
-                .uri(uri)
-                .ip(ip)
-                .timestamp(dateTime)
-                .build()
-                .toString());
+        //httpClient.postHit(host, EndpointHit.builder()
+        //        .app(name)
+        //        .uri(uri)
+        //        .ip(ip)
+        //        .timestamp(dateTime)
+        //        .build()
+        //        .toString());
 
-        //httpClient.postHit(host, "{\"app\":\"ewm-main-service\"," +
-        //        "\"uri\":\"" + uri + "\"," +
-        //        "\"ip\":\"" + ip + "\"," +
-        //        "\"timestamp\":\"" + dateTime + "\"}");
+        httpClient.postHit(host, "{\"app\":\"ewm-main-service\"," +
+                "\"uri\":\"" + uri + "\"," +
+                "\"ip\":\"" + ip + "\"," +
+                "\"timestamp\":\"" + dateTime + "\"}");
     }
 
     public Integer requeryViews(String uris) throws IOException, InterruptedException {
