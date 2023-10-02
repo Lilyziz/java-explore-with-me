@@ -274,7 +274,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/users/{{userId}}/comments/events/{{eventId}}",
+					"raw": "http://localhost:8080/users/{{userId}}/comments",
 					"protocol": "http",
 					"host": [
 						"localhost"
