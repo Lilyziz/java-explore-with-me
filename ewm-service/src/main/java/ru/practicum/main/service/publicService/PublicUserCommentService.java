@@ -23,7 +23,7 @@ public class PublicUserCommentService implements IPublicUserCommentService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<CommentDto> getAllCommentsForEvent(Long eventId, int from, int size) {
+    public List<CommentDto> getAllForEvent(Long eventId, int from, int size) {
         Event event = eventRepository.findById(eventId).orElseThrow(() ->
                 new NotFoundException("Событие не найдено"));
         Pageable pageable = PageRequest.of(from / size, size);

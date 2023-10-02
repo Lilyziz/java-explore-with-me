@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.main.dto.CommentDto;
+import ru.practicum.main.service.publicService.PublicUserCommentService;
 
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/events/{eventId}/comments")
 public class PublicUserCommentController {
-    private final PublicUserCommentController publicUserCommentController;
+    private final PublicUserCommentService publicUserCommentService;
 
     @GetMapping
     public List<CommentDto> getAllForEvent(@PositiveOrZero @PathVariable Long eventId,
@@ -23,6 +24,6 @@ public class PublicUserCommentController {
                                            @RequestParam(defaultValue = "10") int size) {
         log.debug("");
 
-        return publicUserCommentController.getAllForEvent(eventId, from, size);
+        return publicUserCommentService.getAllForEvent(eventId, from, size);
     }
 }

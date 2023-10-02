@@ -5,5 +5,5 @@ import ru.practicum.main.dto.CommentDto;
 import java.util.List;
 
 public interface IPublicUserCommentService {
-    List<CommentDto> getAllCommentsForEvent(Long eventId, int from, int size);
+    List<CommentDto> getAllForEvent(Long eventId, int from, int size);
 }
