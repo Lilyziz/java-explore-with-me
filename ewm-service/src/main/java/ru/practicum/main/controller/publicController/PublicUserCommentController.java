@@ -14,8 +14,8 @@ import java.util.List;
 @Validated
 @AllArgsConstructor
 @RequestMapping("/events/{eventId}/comments")
-public class PublicUserCommentService {
-    private final PublicUserCommentService publicUserCommentService;
+public class PublicUserCommentController {
+    private final PublicUserCommentController publicUserCommentController;
 
     @GetMapping
     public List<CommentDto> getAllForEvent(@PositiveOrZero @PathVariable Long eventId,
@@ -23,6 +23,6 @@ public class PublicUserCommentService {
                                            @RequestParam(defaultValue = "10") int size) {
         log.debug("");
 
-        return publicUserCommentService.getAllForEvent(eventId, from, size);
+        return publicUserCommentController.getAllForEvent(eventId, from, size);
     }
 }
