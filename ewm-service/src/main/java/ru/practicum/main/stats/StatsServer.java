@@ -45,7 +45,7 @@ public class StatsServer {
         //        .build()
         //        .toString());
 
-        httpClient.postHit(host, "{\"app\":\"ewm-main-service\"," +
+        httpClient.postHit(host, "{\"app\":\"" + name + "\"," +
                 "\"uri\":\"" + uri + "\"," +
                 "\"ip\":\"" + ip + "\"," +
                 "\"timestamp\":\"" + dateTime + "\"}");
