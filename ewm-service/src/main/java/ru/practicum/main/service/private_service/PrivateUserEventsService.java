@@ -70,7 +70,9 @@ public class PrivateUserEventsService implements IPrivateUserEventsService {
             throw new BadRequestException("Too late for the event");
         }
         Location location = locationRepository.save(newEventDto.getLocation());
-        event.setCategory(CategoryMapper.toCategory(categoryService.getById(newEventDto.getCategory())));
+        event.setCategory(categoryRepository.findById(newEventDto.getCategory())
+                .orElseThrow(() -> new NotFoundException("Category was not found")));
+
         event.setLocation(location);
         event.setInitiator(user);
         event.setCreatedOn(LocalDateTime.now());
