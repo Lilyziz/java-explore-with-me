@@ -25,7 +25,7 @@ public class StatsServer {
     private final ConfigClient configClient;
 
     @Value("${app.name}")
-    private static String name;
+    private String name;
 
     public StatsServer(ConfigClient configClient) {
         this.configClient = configClient;
