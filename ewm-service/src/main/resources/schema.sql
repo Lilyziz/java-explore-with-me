@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS users, categories, compilations, locations, events, comments, participations,
-    compilation_event, requests, comments CASCADE;
+    compilation_event, requests, CASCADE;
 
 CREATE TABLE IF NOT EXISTS categories
 (
