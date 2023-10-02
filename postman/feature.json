@@ -274,7 +274,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/users/{{userId}}/comments",
+					"raw": "http://localhost:8080/users/{{userId}}/comments/events/{{eventId}}",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -283,14 +283,16 @@
 					"path": [
 						"users",
 						"{{userId}}",
-						"comments"
+						"comments",
+						"events",
+						"{{eventId}}"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Get all comments for the event",
+			"name": "Get all comments from user",
 			"event": [
 				{
 					"listen": "test",
@@ -311,7 +313,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/users/{{userId}}/comments/events/1",
+					"raw": "http://localhost:8080/users/{{userId}}/comments",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -320,9 +322,7 @@
 					"path": [
 						"users",
 						"{{userId}}",
-						"comments",
-						"events",
-						"1"
+						"comments"
 					]
 				}
 			},
