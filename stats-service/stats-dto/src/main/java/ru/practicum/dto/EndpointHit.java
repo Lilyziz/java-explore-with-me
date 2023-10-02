@@ -18,7 +18,7 @@ public class EndpointHit {
     @Override
     public String toString() {
         return String.format("{\"app\":\"%s\"," +
-                "\"uri\":\" %s\"," +
+                "\"uri\":\"%s\"," +
                 "\"ip\":\"%s\"," +
                 "\"timestamp\":\"%s\"}",
                 app, uri, ip, timestamp);
