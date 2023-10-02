@@ -3,6 +3,7 @@ package ru.practicum.main.service.admin_service;
 import org.springframework.stereotype.Service;
 import ru.practicum.main.dto.NewUserRequest;
 import ru.practicum.main.dto.UserDto;
+import ru.practicum.main.model.User;
 
 import java.util.List;
 
@@ -13,4 +14,5 @@ public interface IAdminUserService {
     UserDto save(NewUserRequest newUserRequest);
 
     void delete(Long id);
+    User getById(Long id);
 }

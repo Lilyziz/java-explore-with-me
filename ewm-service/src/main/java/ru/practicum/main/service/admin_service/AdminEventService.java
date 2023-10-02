@@ -124,4 +124,12 @@ public class AdminEventService implements IAdminEventService {
     public Boolean existsByIdAndState(Long id, State state) {
         return eventRepository.existsByIdAndState(id, state);
     }
+
+    public Event save(Event event) {
+        return eventRepository.save(event);
+    }
+
+    public List<Event> getAllByInitiatorId(Long id, Pageable pageable) {
+        return eventRepository.findAllByInitiatorId(id, pageable);
+    }
 }

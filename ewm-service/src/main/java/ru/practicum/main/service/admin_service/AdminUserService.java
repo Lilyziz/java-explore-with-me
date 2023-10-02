@@ -59,6 +59,7 @@ public class AdminUserService implements IAdminUserService {
         userRepository.deleteById(id);
     }
 
+    @Override
     public User getById(Long id) {
         return userRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("User with id = " + id + " was not found"));

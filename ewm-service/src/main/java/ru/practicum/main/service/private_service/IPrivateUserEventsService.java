@@ -19,4 +19,5 @@ public interface IPrivateUserEventsService {
 
     EventRequestStatusUpdateResult updateUsersEventsRequests(Long userId, Long eventId,
                                                              EventRequestStatusUpdateRequest eventRequestStatusUpdateRequest);
+    EventFullDto setConfirmedStatus(EventFullDto eventDto);
 }

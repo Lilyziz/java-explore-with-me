@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PrivateUserEventsService implements IPrivateUserEventsService {
     private final AdminUserService userService;
-    private final EventRepository eventRepository;
     private final AdminEventService eventService;
     private final CategoryRepository categoryRepository;
     private final PublicCategoryService categoryService;
@@ -53,7 +52,7 @@ public class PrivateUserEventsService implements IPrivateUserEventsService {
         userService.getById(userId);
 
         Pageable pageable = PageRequest.of(from / size, size);
-        return eventRepository.findAllByInitiatorId(userId, pageable)
+        return eventService.getAllByInitiatorId(userId, pageable)
                 .stream()
                 .map(EventMapper::toEventFullDto)
                 .map(this::setConfirmedStatus)
@@ -78,7 +77,7 @@ public class PrivateUserEventsService implements IPrivateUserEventsService {
         event.setCreatedOn(LocalDateTime.now());
         event.setState(State.PENDING);
 
-        return EventMapper.toEventFullDto(eventRepository.save(event));
+        return EventMapper.toEventFullDto(eventService.save(event));
     }
 
     @Override
@@ -142,7 +141,7 @@ public class PrivateUserEventsService implements IPrivateUserEventsService {
         Optional.ofNullable(newEventDto.getTitle()).ifPresent(event::setTitle);
 
         event.setEventDate(dateTime);
-        return EventMapper.toEventFullDto(eventRepository.save(event));
+        return EventMapper.toEventFullDto(eventService.save(event));
     }
 
     @Override
@@ -192,7 +191,8 @@ public class PrivateUserEventsService implements IPrivateUserEventsService {
         return eventRequestStatusUpdateResult;
     }
 
-    private EventFullDto setConfirmedStatus(EventFullDto eventDto) {
+    @Override
+    public EventFullDto setConfirmedStatus(EventFullDto eventDto) {
         eventDto.setConfirmedRequests(requestRepository.countByEventIdAndStatus(eventDto.getId(), Status.CONFIRMED));
 
         return eventDto;
