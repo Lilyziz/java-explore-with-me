@@ -11,6 +11,8 @@ import ru.practicum.main.exception.ConflictException;
 import ru.practicum.main.exception.NotFoundException;
 import ru.practicum.main.model.*;
 import ru.practicum.main.repository.*;
+import ru.practicum.main.service.admin_service.AdminEventService;
+import ru.practicum.main.service.admin_service.AdminUserService;
 import ru.practicum.main.service.public_service.PublicCategoryService;
 
 import java.time.LocalDateTime;
@@ -23,9 +25,11 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PrivateUserEventsService implements IPrivateUserEventsService {
-    private final UserRepository userRepository;
+    private final AdminUserService userService;
     private final EventRepository eventRepository;
+    private final AdminEventService eventService;
     private final CategoryRepository categoryRepository;
+    private final PublicCategoryService categoryService;
     private final LocationRepository locationRepository;
     private final RequestRepository requestRepository;
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -46,8 +50,7 @@ public class PrivateUserEventsService implements IPrivateUserEventsService {
 
     @Override
     public List<EventFullDto> getAll(Long userId, int from, int size) {
-        userRepository.findById(userId).orElseThrow(
-                () -> new NotFoundException("User with id = " + userId + " was not found"));
+        userService.getById(userId);
 
         Pageable pageable = PageRequest.of(from / size, size);
         return eventRepository.findAllByInitiatorId(userId, pageable)
@@ -60,16 +63,14 @@ public class PrivateUserEventsService implements IPrivateUserEventsService {
     @Override
     @Transactional
     public EventFullDto save(Long userId, NewEventDto newEventDto) {
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new NotFoundException("User with id = " + userId + " was not found"));
+        User user = userService.getById(userId);
 
         Event event = EventMapper.toEvent(newEventDto);
         if (event.getEventDate().isBefore(LocalDateTime.now().plusHours(2))) {
             throw new BadRequestException("Too late for the event");
         }
         Location location = locationRepository.save(newEventDto.getLocation());
-        event.setCategory(categoryRepository.findById(newEventDto.getCategory())
-                .orElseThrow(() -> new NotFoundException("Category was not found")));
+        event.setCategory(CategoryMapper.toCategory(categoryService.getById(newEventDto.getCategory())));
         event.setLocation(location);
         event.setInitiator(user);
         event.setCreatedOn(LocalDateTime.now());
@@ -80,8 +81,7 @@ public class PrivateUserEventsService implements IPrivateUserEventsService {
 
     @Override
     public EventFullDto getById(Long userId, Long eventId) {
-        Event event = eventRepository.findById(eventId).orElseThrow(
-                () -> new NotFoundException("Event with id = " + eventId + " was not found"));
+        Event event = eventService.getById(eventId);
 
         if (!event.getInitiator().getId().equals(userId)) {
             throw new BadRequestException("You are not a initiator");
@@ -96,11 +96,9 @@ public class PrivateUserEventsService implements IPrivateUserEventsService {
     @Override
     @Transactional
     public EventFullDto update(Long userId, Long eventId, UpdateEventUserRequest newEventDto) {
-        userRepository.findById(userId).orElseThrow(
-                () -> new NotFoundException("User with id = " + userId + " was not found"));
+        userService.getById(userId);
 
-        Event event = eventRepository.findById(eventId).orElseThrow(
-                () -> new NotFoundException("Event with id = " + eventId + " was not found"));
+        Event event = eventService.getById(eventId);
         LocalDateTime dateTime = event.getPublishedOn();
 
         if (event.getState() != null && event.getState().equals(State.PUBLISHED)) {
@@ -150,8 +148,7 @@ public class PrivateUserEventsService implements IPrivateUserEventsService {
     public EventRequestStatusUpdateResult updateUsersEventsRequests(Long userId, Long eventId,
                                                                     EventRequestStatusUpdateRequest eventRequestStatusUpdateRequest) {
 
-        Event event = eventRepository.findById(eventId).orElseThrow(
-                () -> new NotFoundException("Event was not found"));
+        Event event = eventService.getById(eventId);
 
         List<ParticipationRequest> requestsEvent = requestRepository.findAllByEventId(eventId);
 

@@ -7,11 +7,10 @@ import ru.practicum.main.dto.ParticipationRequestDto;
 import ru.practicum.main.dto.ParticipationRequestMapper;
 import ru.practicum.main.exception.BadRequestException;
 import ru.practicum.main.exception.ConflictException;
-import ru.practicum.main.exception.NotFoundException;
 import ru.practicum.main.model.*;
-import ru.practicum.main.repository.EventRepository;
 import ru.practicum.main.repository.RequestRepository;
-import ru.practicum.main.repository.UserRepository;
+import ru.practicum.main.service.admin_service.AdminEventService;
+import ru.practicum.main.service.admin_service.AdminUserService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,13 +20,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PrivateUserRequestService implements IPrivateUserRequestService {
     private final RequestRepository requestRepository;
-    private final UserRepository userRepository;
-    private final EventRepository eventRepository;
+    private final AdminUserService userService;
+    private final AdminEventService eventService;
 
     @Override
     public List<ParticipationRequestDto> getAll(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new NotFoundException("User with id = " + userId + " was not found"));
+        User user = userService.getById(userId);
 
         return requestRepository.findAllByRequester(user).stream()
                 .map(ParticipationRequestMapper::toParticipationRequestDto)
@@ -37,10 +35,8 @@ public class PrivateUserRequestService implements IPrivateUserRequestService {
     @Override
     @Transactional
     public ParticipationRequestDto save(Long userId, Long eventId) {
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new NotFoundException("User with id = " + userId + " was not found"));
-        Event event = eventRepository.findById(eventId).orElseThrow(
-                () -> new NotFoundException("Event with id = " + eventId + " was not found"));
+        User user = userService.getById(userId);
+        Event event = eventService.getById(eventId);
 
         if (requestRepository.existsByRequesterIdAndEventId(userId, eventId)) {
             throw new IllegalStateException("Request already exist");
@@ -50,7 +46,7 @@ public class PrivateUserRequestService implements IPrivateUserRequestService {
             throw new IllegalStateException("You are a initiator of this event");
         }
 
-        if (!eventRepository.existsByIdAndState(eventId, State.PUBLISHED)) {
+        if (!eventService.existsByIdAndState(eventId, State.PUBLISHED)) {
             throw new IllegalStateException("Event is not published");
         }
 
@@ -73,8 +69,7 @@ public class PrivateUserRequestService implements IPrivateUserRequestService {
     @Override
     @Transactional
     public ParticipationRequestDto updateAndCancel(Long userId, Long requestId) {
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new NotFoundException("User with id = " + userId + " was not found"));
+        User user = userService.getById(userId);
 
         ParticipationRequest participationRequest = requestRepository.findByIdAndRequester(requestId, user);
         if (participationRequest == null) {

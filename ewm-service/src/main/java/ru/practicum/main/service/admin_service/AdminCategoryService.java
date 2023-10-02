@@ -16,7 +16,7 @@ import ru.practicum.main.repository.EventRepository;
 @RequiredArgsConstructor
 public class AdminCategoryService implements IAdminCategoryService {
     private final CategoryRepository categoryRepository;
-    private final EventRepository eventRepository;
+    private final AdminEventService eventService;
 
     @Override
     @Transactional
@@ -45,7 +45,7 @@ public class AdminCategoryService implements IAdminCategoryService {
     public void delete(Long id) {
         categoryRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Category with id = " + id + " was not found"));
-        if (eventRepository.findFirstByCategoryId(id) != null) {
+        if (eventService.getFirstByCategoryId(id) != null) {
             throw new ConflictException("There is a conflict with category");
         }
 

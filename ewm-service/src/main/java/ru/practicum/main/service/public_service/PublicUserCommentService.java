@@ -7,10 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.main.dto.CommentDto;
 import ru.practicum.main.dto.CommentMapper;
-import ru.practicum.main.exception.NotFoundException;
 import ru.practicum.main.model.Event;
 import ru.practicum.main.repository.CommentRepository;
-import ru.practicum.main.repository.EventRepository;
+import ru.practicum.main.service.admin_service.AdminEventService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,13 +18,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PublicUserCommentService implements IPublicUserCommentService {
     private final CommentRepository commentRepository;
-    private final EventRepository eventRepository;
+    private final AdminEventService eventService;
 
     @Override
     @Transactional(readOnly = true)
     public List<CommentDto> getAllForEvent(Long eventId, int from, int size) {
-        Event event = eventRepository.findById(eventId).orElseThrow(
-                () -> new NotFoundException("Event was not found"));
+        Event event = eventService.getById(eventId);
         Pageable pageable = PageRequest.of(from / size, size);
 
         return commentRepository.findAllCommentByEvent(event, pageable)

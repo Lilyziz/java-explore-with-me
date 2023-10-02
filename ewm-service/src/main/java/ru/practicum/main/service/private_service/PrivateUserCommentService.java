@@ -14,6 +14,8 @@ import ru.practicum.main.model.User;
 import ru.practicum.main.repository.CommentRepository;
 import ru.practicum.main.repository.EventRepository;
 import ru.practicum.main.repository.UserRepository;
+import ru.practicum.main.service.admin_service.AdminEventService;
+import ru.practicum.main.service.admin_service.AdminUserService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,16 +24,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PrivateUserCommentService implements IPrivateUserCommentService {
     private final CommentRepository commentRepository;
-    private final UserRepository userRepository;
-    private final EventRepository eventRepository;
+    private final AdminUserService userService;
+    private final AdminEventService eventService;
 
     @Override
     @Transactional
     public CommentDto save(Long userId, Long eventId, CommentDto commentDto) {
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new NotFoundException("User was not found"));
-        Event event = eventRepository.findById(eventId).orElseThrow(
-                () -> new NotFoundException("Event was not found"));
+        User user = userService.getById(userId);
+        Event event = eventService.getById(eventId);
 
         Comment comment = CommentMapper.toComment(commentDto);
         comment.setUser(user);
@@ -42,8 +42,7 @@ public class PrivateUserCommentService implements IPrivateUserCommentService {
 
     @Override
     public List<CommentDto> getAll(Long userId, int from, int size) {
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new NotFoundException("User was not found"));
+        User user = userService.getById(userId);
 
         return commentRepository.findAllByUser(user, PageRequest.of(from / size, size))
                 .stream()

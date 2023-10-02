@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AdminCompilationService implements IAdminCompilationService {
     private final CompilationRepository compilationRepository;
-    private final EventRepository eventRepository;
+    private final AdminEventService eventService;
 
     @Override
     @Transactional
@@ -27,7 +27,7 @@ public class AdminCompilationService implements IAdminCompilationService {
             newCompilationDto.setEvents(List.of(Long.MAX_VALUE));
         }
 
-        List<Event> events = eventRepository.findAllById(newCompilationDto.getEvents());
+        List<Event> events = eventService.getAllById(newCompilationDto.getEvents());
         Compilation compilation = CompilationMapper.toCompilation(newCompilationDto, events);
         List<EventShortDto> eventShortDtos = compilation.getEvents().stream()
                 .map(EventMapper::toEventShortDto).collect(Collectors.toList());
@@ -43,7 +43,7 @@ public class AdminCompilationService implements IAdminCompilationService {
 
         List<Event> events = new ArrayList<>();
         if (newCompilationDto.getEvents() != null) {
-            events = eventRepository.findAllById(newCompilationDto.getEvents());
+            events = eventService.getAllById(newCompilationDto.getEvents());
             compilation.setEvents(events);
         }
 
