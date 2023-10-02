@@ -28,7 +28,7 @@ public class PublicUserCommentService implements IPublicUserCommentService {
                 () -> new NotFoundException("Event was not found"));
         Pageable pageable = PageRequest.of(from / size, size);
 
-        return commentRepository.findAllByEvent(event, pageable)
+        return commentRepository.findAllCommentByEvent(event, pageable)
                 .stream()
                 .map(CommentMapper::toCommentDto)
                 .collect(Collectors.toList());

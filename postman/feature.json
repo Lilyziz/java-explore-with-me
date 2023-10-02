@@ -253,7 +253,7 @@
 			"response": []
 		},
 		{
-			"name": "Get all comments",
+			"name": "Get all comments for the event",
 			"event": [
 				{
 					"listen": "test",
