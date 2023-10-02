@@ -274,18 +274,16 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/users/{{userId}}/comments/events/{{eventId}}",
+					"raw": "http://localhost:8080/events/{eventId}/comments",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"users",
-						"{{userId}}",
-						"comments",
 						"events",
-						"{{eventId}}"
+						"{{eventId}}",
+						"comments"
 					]
 				}
 			},
