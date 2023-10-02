@@ -14,7 +14,6 @@ import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 @Component
@@ -37,18 +36,13 @@ public class StatsServer {
 
         String ip = request.getHeader("host").split(":")[0];
 
-        //httpClient.postHit(host, EndpointHit.builder()
-        //        .app(name)
-        //        .uri(uri)
-        //        .ip(ip)
-        //        .timestamp(dateTime)
-        //        .build()
-        //        .toString());
-
-        httpClient.postHit(host, "{\"app\":\"" + name + "\"," +
-                "\"uri\":\"" + uri + "\"," +
-                "\"ip\":\"" + ip + "\"," +
-                "\"timestamp\":\"" + dateTime + "\"}");
+        httpClient.postHit(host, EndpointHit.builder()
+                .app(name)
+                .uri(uri)
+                .ip(ip)
+                .timestamp(dateTime)
+                .build()
+                .toString());
     }
 
     public Integer requeryViews(String uris) throws IOException, InterruptedException {
