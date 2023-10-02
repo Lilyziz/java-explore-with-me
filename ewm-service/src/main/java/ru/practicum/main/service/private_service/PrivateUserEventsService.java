@@ -28,7 +28,6 @@ public class PrivateUserEventsService implements IPrivateUserEventsService {
     private final AdminUserService userService;
     private final AdminEventService eventService;
     private final CategoryRepository categoryRepository;
-    private final PublicCategoryService categoryService;
     private final LocationRepository locationRepository;
     private final RequestRepository requestRepository;
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -69,7 +68,8 @@ public class PrivateUserEventsService implements IPrivateUserEventsService {
             throw new BadRequestException("Too late for the event");
         }
         Location location = locationRepository.save(newEventDto.getLocation());
-        event.setCategory(CategoryMapper.toModel(categoryService.getById(newEventDto.getCategory())));
+        event.setCategory(categoryRepository.findById(newEventDto.getCategory())
+                .orElseThrow(() -> new NotFoundException("Category was not found")));
 
         event.setLocation(location);
         event.setInitiator(user);
