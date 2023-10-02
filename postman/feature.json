@@ -283,9 +283,7 @@
 					"path": [
 						"users",
 						"{{userId}}",
-						"comments",
-						"events",
-						"{{eventId}}"
+						"comments"
 					]
 				}
 			},
