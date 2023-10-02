@@ -32,6 +32,7 @@ public class PrivateUserCommentService implements IPrivateUserCommentService {
                 () -> new NotFoundException("User was not found"));
         Event event = eventRepository.findById(eventId).orElseThrow(
                 () -> new NotFoundException("Event was not found"));
+
         Comment comment = CommentMapper.toComment(commentDto);
         comment.setUser(user);
         comment.setEvent(event);

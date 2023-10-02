@@ -16,7 +16,7 @@ public class CommentDto {
     @Size(max = 2000)
     private String text;
 
-    private String authorName;
+    private String author;
 
     private String created;
 }

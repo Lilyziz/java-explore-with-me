@@ -27,17 +27,18 @@ public class PrivateUserCommentController {
                            @PositiveOrZero @PathVariable Long eventId,
                            @Valid @RequestBody CommentDto commentDto) {
 
-        log.debug("");
+        log.debug("Create comment for event with id {} from user with id {} with content {}",
+                eventId, userId, commentDto);
         return privateUserCommentService.save(userId, eventId, commentDto);
     }
 
 
-    @GetMapping("/events/{eventId}")
+    @GetMapping
     public List<CommentDto> getAll(@Positive @PathVariable Long userId,
                                    @RequestParam(defaultValue = "0") int from,
                                    @RequestParam(defaultValue = "10") int size) {
 
-        log.debug("");
+        log.debug("Get all comment from user with id {}", userId);
         return privateUserCommentService.getAll(userId, from, size);
     }
 
@@ -47,7 +48,7 @@ public class PrivateUserCommentController {
                              @PositiveOrZero @PathVariable Long userId,
                              @Valid @RequestBody CommentDto commentDto) {
 
-        log.debug("");
+        log.debug("Update comment with id {} from user with id {} with content {}", commentId, userId, commentDto);
         return privateUserCommentService.update(commentId, userId, commentDto);
     }
 
@@ -56,7 +57,7 @@ public class PrivateUserCommentController {
     public void delete(@PositiveOrZero @PathVariable Long userId,
                        @PositiveOrZero @PathVariable Long commentId) {
 
-        log.debug("");
+        log.debug("Delete comment with id {} from user with id {}", commentId, userId);
         privateUserCommentService.delete(commentId, userId);
     }
 }

@@ -22,7 +22,7 @@ public class PublicUserCommentController {
     public List<CommentDto> getAllForEvent(@PositiveOrZero @PathVariable Long eventId,
                                            @RequestParam(defaultValue = "0") int from,
                                            @RequestParam(defaultValue = "10") int size) {
-        log.debug("");
+        log.debug("Get all comments for the event with id {}", eventId);
 
         return publicUserCommentService.getAllForEvent(eventId, from, size);
     }

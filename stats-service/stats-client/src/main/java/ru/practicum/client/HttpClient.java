@@ -11,9 +11,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class HttpClient {
-    //@Value("${server.port}")
-    //Integer port;
-    String port = "9090";
+    @Value("${server.port}")
+    Integer port;
 
     public HttpResponse<String> postHit(String host, String hit) throws IOException, InterruptedException {
 
