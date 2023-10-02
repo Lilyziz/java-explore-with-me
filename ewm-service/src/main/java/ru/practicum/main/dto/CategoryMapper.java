@@ -11,6 +11,12 @@ public class CategoryMapper {
                 .build();
     }
 
+    public static Category toModel(CategoryDto categoryDto) {
+        return Category.builder()
+                .name(categoryDto.getName())
+                .build();
+    }
+
     public static CategoryDto toCategoryDto(Category category) {
         return CategoryDto.builder()
                 .id(category.getId())

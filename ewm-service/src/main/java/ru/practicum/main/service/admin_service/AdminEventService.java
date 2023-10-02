@@ -108,27 +108,33 @@ public class AdminEventService implements IAdminEventService {
         return EventMapper.toEventFullDto(eventRepository.save(event));
     }
 
+    @Override
     public List<Event> getAllById(List<Long> ids) {
         return eventRepository.findAllById(ids);
     }
 
+    @Override
     public Event getFirstByCategoryId(Long id) {
         return eventRepository.findFirstByCategoryId(id);
     }
 
+    @Override
     public Event getById(Long id) {
         return eventRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Event with id = " + id + " was not found"));
     }
 
+    @Override
     public Boolean existsByIdAndState(Long id, State state) {
         return eventRepository.existsByIdAndState(id, state);
     }
 
+    @Override
     public Event save(Event event) {
         return eventRepository.save(event);
     }
 
+    @Override
     public List<Event> getAllByInitiatorId(Long id, Pageable pageable) {
         return eventRepository.findAllByInitiatorId(id, pageable);
     }
