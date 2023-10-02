@@ -13,7 +13,6 @@
 							"pm.test(\"Response code 201 and data in json format\", function () {",
 							"    var jsonData = pm.response.json();",
 							"    pm.environment.set(\"userId\", jsonData.id);",
-							"   // console.log(jsonData.id);",
 							"    pm.response.to.have.status(201);",
 							"    pm.response.to.be.withBody;",
 							"    pm.response.to.be.json;",
